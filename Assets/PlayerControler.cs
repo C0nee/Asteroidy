@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControler : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class PlayerControler : MonoBehaviour
     private Vector2 controls;
     private bool firebuttondown = false;
     private Wyjazd cs;
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -27,38 +30,55 @@ public class PlayerControler : MonoBehaviour
         float v, h;
         v = Input.GetAxis("Vertical");
         h = Input.GetAxis("Horizontal");
+        controls = new Vector2(h, v);
+        
         float maxHorizontal = cs.worldWidth / 2;
         float maxVertical = cs.worldHeight / 2;
         
          
-        controls = new Vector2(h, v);
+        
+
         if (Mathf.Abs(transform.position.x) > maxHorizontal) 
         {
-            Vector3 newPos = new Vector3(transform.position.x* -0,95f, transform.position.z );
-            transform.position= newPos;
+            Vector3 newPosition = new Vector3(transform.position.x * -0.95f,
+                                               0,
+                                               transform.position.z);
+            transform.position = newPosition;
         }
-        if(Mathf.Abs(transform.position.z) > maxVertical)
+        if (Mathf.Abs(transform.position.z) > maxVertical)
         {
-            Vector3 newPos = new Vector3(transform.position.x, 0, transform.position.z * -   0.95f);
-            transform.position = newPos;
+            Vector3 newPosition = new Vector3(transform.position.x,
+                                              0,
+                                              transform.position.z * -0.95f);
+            transform.position = newPosition;
         }
-        if(Input.GetKeyDown(KeyCode.Space)) { 
+            if (Input.GetKeyDown(KeyCode.Space)) { 
         firebuttondown= true;
+            
         }
     }
     private void FixedUpdate()
     {
-      
-      rb.AddForce(transform.forward*controls.y,ForceMode.Acceleration);
-        rb.AddTorque(transform.up * controls.x * acceleration,ForceMode.Acceleration);
 
-        
-        if (firebuttondown) { GameObject Bullet = Instantiate(BulletPrefab, gunLeft.position, Quaternion.identity);
+        rb.AddForce(transform.forward * controls.y * acceleration, ForceMode.Acceleration);
+        rb.AddTorque(transform.up * controls.x * acceleration, ForceMode.Acceleration);
+
+
+        if (firebuttondown) {
+            GameObject Bullet = Instantiate(BulletPrefab, gunLeft.position, Quaternion.identity);
             Bullet.transform.parent = null;
-            Bullet.GetComponent<Rigidbody>().AddForce(BulletPrefab.transform.forward *10 ,ForceMode.VelocityChange);
-            Destroy(Bullet, 5);
-            firebuttondown= false;
+            Bullet.GetComponent<Rigidbody>().AddForce(transform.forward * 10,
+                                                        ForceMode.VelocityChange);
+            firebuttondown = false;
         }
         
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+            GameObject other = collision.gameObject;
+            if (other.CompareTag("Enemy")) 
+            {
+            SceneManager.LoadScene("MainMenu");
+            }
+}
 }

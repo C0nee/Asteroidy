@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 9212669329409477377}
   m_Layer: 0
   m_Name: Asteroid
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -244,6 +244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d594047a6ff24e41be7a05403ac859b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Przegrales: {fileID: 356397113036765322, guid: 8265adc9249e18147a2364c470aa85ba, type: 3}
+  OVERSCREEN: {fileID: 486654013774700440, guid: 29426dae815939a4d86d499439e76658, type: 3}
 --- !u!1 &9212669329495175188
 GameObject:
   m_ObjectHideFlags: 0
